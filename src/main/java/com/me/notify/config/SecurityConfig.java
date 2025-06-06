@@ -25,7 +25,7 @@ public class SecurityConfig {
 
         http.
                 authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/join",
+                        .requestMatchers("/", "/user/login", "/user/join",
                                 "/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 );
@@ -37,7 +37,7 @@ public class SecurityConfig {
         http.
                 csrf((csrf) -> csrf
                         .csrfTokenRequestHandler(requestHandler)
-                        .ignoringRequestMatchers("/join")
+                        .ignoringRequestMatchers("/user/join")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
@@ -45,8 +45,8 @@ public class SecurityConfig {
         http
                 .httpBasic(auth -> auth.disable())
                 .formLogin(auth -> auth
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login").permitAll()
+                        .loginPage("/user/login")
+                        .loginProcessingUrl("/user/login").permitAll()
                 );
 
         return http.build();
