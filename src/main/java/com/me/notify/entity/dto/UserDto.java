@@ -21,6 +21,14 @@ public class UserDto {
         );
     }
 
+    public static UserDto fromEntity(Users users) {
+        return new UserDto(
+                users.getUsername(),
+                users.getPassword(),
+                users.getName()
+        );
+    }
+
     public Users toEntity() {
         return Users.of(username, password, name);
     }

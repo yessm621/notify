@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -7,9 +7,13 @@
 <body>
 <h1>Login Page</h1>
 <hr>
-<form action="/login" method="post" name="loginForm">
-  <input id="username" type="text" name="username" placeholder="username"/>
-  <input id="password" type="password" name="password" placeholder="password"/>
+<form th:action="@{/user/login}" th:object="${loginForm}" method="post">
+  <input th:field="*{username}" type="text" placeholder="username"/>
+  <p th:if="${#fields.hasErrors('username')}" th:error="*{username}">Incorrect data</p>
+
+  <input th:field="*{password}" type="password" placeholder="password"/>
+  <p th:if="${#fields.hasErrors('password')}" th:error="*{password}">Incorrect data</p>
+
   <input type="submit" value="login"/>
 </form>
 </body>
