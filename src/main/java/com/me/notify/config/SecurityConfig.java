@@ -49,11 +49,24 @@ public class SecurityConfig {
                 .formLogin(auth -> auth
                         .loginPage("/user/login")
                         .loginProcessingUrl("/user/login").permitAll()
+                )
+                .logout(auth -> auth
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/user/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
                 );
 
         return http.build();
     }
 
+    /*
+    이전에는 스프링 시큐리티의 인증을 담당하는 AuthenticationManager에
+    authenticationManagerBuilder를 이용해서
+    userDetailsService와 passwordEncode를 직접 설정해주어야 했지만,
+    현재는 AuthenticationManager 빈 생성 시 자동으로 UserSecurityService와 PasswordEncoder가 설정된다.
+    */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();

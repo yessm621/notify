@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
 <h1>Home Page</h1>
+
+<li sec:authorize="isAnonymous()">
+  <a href="/user/login">Login</a>
+</li>
+
+<li sec:authorize="isAuthenticated()">
+  <a href="/post">Post</a>
+</li>
+<li sec:authorize="isAuthenticated()">
+  <form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <button type="submit">Logout</button>
+  </form>
+</li>
 </body>
 </html>
