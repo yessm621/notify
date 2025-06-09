@@ -1,10 +1,13 @@
 package com.me.notify.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
 
     @Id
@@ -18,4 +21,12 @@ public class Post {
 
     private String title;
     private String content;
+
+    public static Post of(Users user, String title, String content) {
+        Post post = new Post();
+        post.user = user;
+        post.title = title;
+        post.content = content;
+        return post;
+    }
 }
