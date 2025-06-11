@@ -7,7 +7,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
-    void create(PostDto dto);
+    void create(String username, PostDto dto);
 
     Page<PostResponse> list(Pageable pageable);
+
+    void like(Long postId, String username);
+
+    void comment(Long postId, String username, String comment);
 }

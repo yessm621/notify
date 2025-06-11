@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h2>Post</h2>
+<a href="/post/create">Post create</a>
+<div th:if="${#lists.isEmpty(postList.content)}">
+  <p>작성된 post가 없습니다.</p>
+</div>
+<ul th:if="${!#lists.isEmpty(postList.content)}">
+  <li th:each="post : ${postList.content}">
+    <strong th:text="${post.title}">제목</strong> -
+    <span th:text="${post.name}">작성자</span>
+  </li>
+</ul>
+
+</body>
+</html>

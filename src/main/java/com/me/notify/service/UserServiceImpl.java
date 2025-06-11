@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void join(UserDto dto) {
+        //TODO:: 아이디 중복 체크
         Users user = Users.of(dto.getUsername(), encoder.encode(dto.getPassword()), dto.getName());
         userRepository.save(user);
     }

@@ -7,9 +7,9 @@ public record PostDto(Long userId, String title, String content) {
 
     public static PostDto from(PostForm form) {
         return new PostDto(
-                form.userId(),
-                form.title(),
-                form.content()
+                form.getUserId(),
+                form.getTitle(),
+                form.getContent()
         );
     }
 

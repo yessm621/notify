@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>Post Create</h1>
+<hr>
+<form th:action="@{/post/create}" th:object="${postForm}" method="post">
+  <input th:field="*{title}" type="text" placeholder="title"/>
+  <p th:if="${#fields.hasErrors('title')}" th:error="*{title}">Incorrect data</p>
+
+  <input th:field="*{content}" type="text" placeholder="content"/>
+  <p th:if="${#fields.hasErrors('content')}" th:error="*{content}">Incorrect data</p>
+
+  <input type="submit" value="create"/>
+</form>
+</body>
+</html>

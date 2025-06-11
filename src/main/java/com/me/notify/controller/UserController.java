@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,11 +34,11 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String join(@Valid @ModelAttribute JoinForm joinForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String join(@Valid @ModelAttribute JoinForm joinForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/join";
         }
         userService.join(UserDto.from(joinForm));
-        return "user/login";
+        return "redirect:/user/login";
     }
 }
