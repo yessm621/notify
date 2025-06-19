@@ -12,8 +12,10 @@
 </div>
 <ul th:if="${!#lists.isEmpty(postList.content)}">
   <li th:each="post : ${postList.content}">
-    <strong th:text="${post.title}">제목</strong> -
-    <span th:text="${post.name}">작성자</span>
+    <a th:href="@{/post/{postId}(postId=${post.postId})}">
+      <strong th:text="${post.title}">제목</strong> -
+      <span th:text="${post.name}">작성자</span>
+    </a>
   </li>
 </ul>
 
