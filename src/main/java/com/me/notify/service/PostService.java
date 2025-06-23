@@ -14,8 +14,6 @@ public interface PostService {
 
     void like(Long postId, String username);
 
-    void comment(Long postId, String username, String comment);
-
     PostDetailResponse detail(Long postId);
 
     void commentCreate(Long postId, String writer, String comment);

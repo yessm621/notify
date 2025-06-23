@@ -2,10 +2,9 @@ package com.me.notify.service;
 
 import com.me.notify.controller.response.PostDetailResponse;
 import com.me.notify.controller.response.PostResponse;
-import com.me.notify.entity.Comment;
-import com.me.notify.entity.Post;
-import com.me.notify.entity.Users;
+import com.me.notify.entity.*;
 import com.me.notify.entity.dto.PostDto;
+import com.me.notify.repository.AlarmRepository;
 import com.me.notify.repository.CommentRepository;
 import com.me.notify.repository.PostRepository;
 import com.me.notify.repository.UserRepository;
@@ -23,6 +22,8 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final AlarmRepository alarmRepository;
+    private final AlarmService alarmService;
 
     @Transactional
     @Override
@@ -43,12 +44,6 @@ public class PostServiceImpl implements PostService {
 
     }
 
-    @Transactional
-    @Override
-    public void comment(Long postId, String username, String comment) {
-
-    }
-
     @Override
     public PostDetailResponse detail(Long postId) {
         Post post = postRepository.findById(postId)
@@ -62,5 +57,12 @@ public class PostServiceImpl implements PostService {
         Users user = userRepository.findByUsername(writer).orElseThrow();
         Post post = postRepository.findById(postId).orElseThrow();
         commentRepository.save(Comment.createComment(user, post, comment));
+
+        Alarm alarm = alarmRepository.save(Alarm.of(post.getUser(), user, AlarmType.NEW_COMMENT_ON_POST));
+        alarmService.send(alarm.getId(), post.getUser().getId());
+    }
+
+    public void sendAlarm(String type) {
+
     }
 }
