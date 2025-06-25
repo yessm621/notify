@@ -12,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
@@ -50,13 +47,14 @@ public class UserController {
     }
 
     @GetMapping("/alarm")
-    public String alarm(Authentication authentication, Model model) {
-        List<AlarmResponse> alarm = userService.alarmList(authentication.getName());
-        for (AlarmResponse alarmResponse : alarm) {
-            System.out.println("alarmResponse = " + alarmResponse);
-        }
-        model.addAttribute("alarms", alarm);
+    public String alarm() {
         return "alarm/list";
+    }
+
+    @GetMapping("/alarm/list")
+    @ResponseBody
+    public List<AlarmResponse> alarmsJson(Authentication authentication) {
+        return userService.alarmList(authentication.getName());
     }
 
     @GetMapping("/alarm/subscribe")

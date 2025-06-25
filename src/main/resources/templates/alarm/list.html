@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>알림</title>
+  <title>Title</title>
 </head>
 <body>
 
 <h2>🔔 실시간 알림</h2>
-
 <!-- 알림 목록 -->
-<ul id="alarmList">
-  <li th:each="alarm : ${alarms}" th:text="${alarm.text}">알림 내용</li>
-</ul>
+<ul id="alarmList"></ul>
 
+</body>
 <script>
   // 알림 리스트를 비동기로 다시 불러오기
   function fetchAlarms() {
-    console.log("fetchAlarms======");
-    fetch('/user/alarm')
+    fetch('/user/alarm/list')
       .then(res => res.json())
       .then(data => {
         const alarmList = document.getElementById("alarmList");
         alarmList.innerHTML = ''; // 기존 알림 지움
-        data.result.content.forEach(alarm => {
+        data.forEach(alarm => {
           const li = document.createElement('li');
           li.textContent = alarm.text;
           alarmList.appendChild(li);
@@ -30,30 +27,27 @@
       })
       .catch(err => {
         console.error('알림 로드 실패', err);
-        //window.location.href = '/user/login';
       });
   }
 
   // SSE 연결
-  const eventSource = new EventSource('/user/alarm/subscribe');
+  const sse = new EventSource('/user/alarm/subscribe');
 
-  eventSource.addEventListener('open', function () {
-    console.log("🔌 SSE 연결됨");
+  sse.addEventListener("open", () => {
+    console.log("✅ SSE 연결 성공");
+    fetchAlarms(); // 연결된 시점에 최초 호출
   });
 
-  eventSource.addEventListener('alarm', function (event) {
-    console.log("📩 새로운 알림 수신:", event.data);
-    fetchAlarms(); // 새 알림 도착 → 리스트 갱신
+  sse.addEventListener("alarm", (event) => {
+    console.log("📨 새로운 알림 수신:", event.data);
+    fetchAlarms(); // 현재 페이지 다시 불러오기
   });
 
-  eventSource.addEventListener('error', function (event) {
+  sse.addEventListener("error", (event) => {
     console.error("❌ SSE 오류", event);
-    eventSource.close();
+    sse.close();
   });
 
-  // 최초 로딩 시 fetch
   fetchAlarms();
 </script>
-
-</body>
 </html>
