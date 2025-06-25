@@ -17,9 +17,9 @@
   <a href="/user/alarm">Alarm Page</a>
 </li>
 <li sec:authorize="isAuthenticated()">
-  <form action="/logout" method="post">
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <button type="submit">Logout</button>
+  <form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <button type="submit">로그아웃</button>
   </form>
 </li>
 </body>
